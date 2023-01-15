@@ -2,6 +2,8 @@ package com.abede.service;
 
 import com.abede.model.FileMultipartRequest;
 import com.abede.model.Item;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -9,10 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.sql.DataSource;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @ApplicationScoped
@@ -45,6 +51,23 @@ public class DocumentService {
         }
     }
 
+    public Response reportItem() throws JRException {
+
+        File file = new File("src/main/resources/Item_list.jrxml");
+        JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(Item.listAll());
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+
+//        Map<String, Object> param = new HashMap<>();
+//        param.put("DATASOURCE", jrBeanCollectionDataSource);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null , jrBeanCollectionDataSource);
+
+        //export jasperPrint dalam bentuk byte array
+        byte[] jasperResult = JasperExportManager.exportReportToPdf(jasperPrint);
+
+        //return response dengan content type pdf
+        return Response.ok().type("application/pdf").entity(jasperResult).build();
+    }
 }
 
 
