@@ -91,6 +91,7 @@ public class ItemService {
                     .build();
         }
         item.delete();
+
         return Response.ok().entity(Map.of("message", "item "+id+" deleted")).build();
     }
 }

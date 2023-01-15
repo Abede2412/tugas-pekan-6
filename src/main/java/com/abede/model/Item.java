@@ -4,12 +4,14 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name="item")
+@ApplicationScoped
 public class Item extends PanacheEntityBase {
 
     @Id
@@ -109,4 +111,6 @@ public class Item extends PanacheEntityBase {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
 }

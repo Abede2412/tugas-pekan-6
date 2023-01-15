@@ -2,13 +2,12 @@ package com.abede.controller;
 
 
 import com.abede.service.ItemService;
-import com.abede.service.ReportService;
 import io.vertx.core.json.JsonObject;
-import net.sf.jasperreports.engine.JRException;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+
 
 
 @Path("/items")
@@ -17,15 +16,7 @@ public class ItemController {
     @Inject
     ItemService itemService;
 
-    @Inject
-    ReportService reportService;
 
-    @GET
-    @Path("/report")
-    //@Produces("application/pdf")
-    public Response getReport() throws JRException {
-        return reportService.exportJasper();
-    }
 
     @POST
     public Response create(JsonObject request){
