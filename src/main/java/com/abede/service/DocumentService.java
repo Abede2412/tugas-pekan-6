@@ -56,16 +56,8 @@ public class DocumentService {
         File file = new File("src/main/resources/Item_list.jrxml");
         JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(Item.listAll());
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-
-//        Map<String, Object> param = new HashMap<>();
-//        param.put("DATASOURCE", jrBeanCollectionDataSource);
-
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null , jrBeanCollectionDataSource);
-
-        //export jasperPrint dalam bentuk byte array
         byte[] jasperResult = JasperExportManager.exportReportToPdf(jasperPrint);
-
-        //return response dengan content type pdf
         return Response.ok().type("application/pdf").entity(jasperResult).build();
     }
 }
